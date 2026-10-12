@@ -30,7 +30,7 @@ description: "关于 happyfenglife 以及这个博客 —— 我是谁、写些�
 ## 联系我
 
 - GitHub：[@happyfenglife](https://github.com/happyfenglife)
-- 邮箱：hello@happyfenglife.com
+- 邮箱：hello@happyfenglife.club
 
 ---
 
@@ -40,5 +40,5 @@ description: "关于 happyfenglife 以及这个博客 —— 我是谁、写些�
 
 - [ ] 个人头像 / 配图（可选）
 - [ ] GitHub 链接（现为占位 `happyfenglife`）
-- [ ] 邮箱地址（现为占位 `hello@happyfenglife.com`）
+- [ ] 邮箱地址（现为占位 `hello@happyfenglife.club`）
 - [ ] "我在做什么" 的具体描述

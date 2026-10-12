@@ -2,7 +2,7 @@ import { defineAstroPaperConfig } from "./src/types/config";
 
 export default defineAstroPaperConfig({
   site: {
-    url: "https://happyfenglife.com",
+    url: "https://happyfenglife.club",
     title: "happyfenglife",
     description:
       "记录技术、生活与游戏的点滴 —— 一个技术 + 生活混合的中文个人博客。",
@@ -35,7 +35,7 @@ export default defineAstroPaperConfig({
   socials: [
     // TODO(待替换): 替换为你的真实社交链接（可用：github / mail / x / linkedin / telegram / whatsapp / facebook / pinterest）
     { name: "github", url: "https://github.com/happyfenglife" },
-    { name: "mail", url: "mailto:hello@happyfenglife.com" },
+    { name: "mail", url: "mailto:hello@happyfenglife.club" },
   ],
   shareLinks: [
     { name: "x", url: "https://x.com/intent/post?url=" },
