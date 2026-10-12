@@ -1,0 +1,83 @@
+---
+import { GISCUS } from "@/constants";
+---
+
+<section class="mt-8" aria-label="Comments">
+  <h2 class="mb-4 text-lg font-semibold">Comments</h2>
+  <div class="giscus"></div>
+
+  <script is:inline data-astro-rerun define:vars={{ giscus: GISCUS }}>
+    (function () {
+      var cfg = giscus || {};
+      var mount = document.querySelector(".giscus");
+      if (!mount) return;
+
+      function currentTheme() {
+        return document.documentElement.getAttribute("data-theme") === "dark"
+          ? "dark"
+          : "light";
+      }
+
+      // 占位检测：关键字段未替换时给出友好提示，避免加载报错
+      var unresolved =
+        !cfg.repo ||
+        cfg.repo.indexOf("TODO") !== -1 ||
+        String(cfg.repoId || "").indexOf("xxx") !== -1 ||
+        String(cfg.categoryId || "").indexOf("xxx") !== -1;
+
+      if (unresolved) {
+        mount.innerHTML =
+          '<p style="opacity:.7;font-size:.9rem">💬 评论区尚未启用：请在 <code>src/constants.ts</code> 填入真实的 Giscus 配置（见《开发流程文档》待替换项）。</p>';
+        return;
+      }
+
+      mount.innerHTML = "";
+      var s = document.createElement("script");
+      s.src = "https://giscus.app/client.js";
+      s.async = true;
+      s.crossOrigin = "anonymous";
+      s.setAttribute("data-repo", cfg.repo);
+      s.setAttribute("data-repo-id", cfg.repoId);
+      s.setAttribute("data-category", cfg.category);
+      s.setAttribute("data-category-id", cfg.categoryId);
+      s.setAttribute("data-mapping", cfg.mapping || "pathname");
+      s.setAttribute("data-strict", cfg.strict || "0");
+      s.setAttribute("data-reactions-enabled", cfg.reactionsEnabled || "1");
+      s.setAttribute("data-emit-metadata", cfg.emitMetadata || "0");
+      s.setAttribute("data-input-position", cfg.inputPosition || "bottom");
+      s.setAttribute("data-theme", currentTheme());
+      s.setAttribute("data-lang", cfg.lang || "zh-CN");
+      s.setAttribute("data-loading", cfg.loading || "lazy");
+      mount.appendChild(s);
+
+      // 主题同步：AstroPaper 切换明暗时，通知 Giscus iframe 跟随
+      function sync() {
+        var iframe = document.querySelector("iframe.giscus-frame");
+        if (!iframe || !iframe.contentWindow) return;
+        iframe.contentWindow.postMessage(
+          { giscus: { setConfig: { theme: currentTheme() } } },
+          "https://giscus.app"
+        );
+      }
+
+      var tries = 0;
+      var timer = setInterval(function () {
+        sync();
+        if (++tries > 20) clearInterval(timer);
+      }, 500);
+
+      document.addEventListener("click", function (e) {
+        var el = e.target;
+        if (el && el.closest && el.closest("#theme-btn")) setTimeout(sync, 80);
+      });
+
+      if (window.__giscusThemeObserver)
+        window.__giscusThemeObserver.disconnect();
+      window.__giscusThemeObserver = new MutationObserver(sync);
+      window.__giscusThemeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-theme", "class"],
+      });
+    })();
+  </script>
+</section>
