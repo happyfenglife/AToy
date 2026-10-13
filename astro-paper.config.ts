@@ -9,7 +9,12 @@ export default defineAstroPaperConfig({
     author: "happyfenglife",
     // TODO(待替换): 替换为你的真实主页（如 GitHub / 个人站）
     profile: "https://github.com/happyfenglife",
-    ogImage: "default-og.jpg",
+    // 首页 / 关于 / 归档等没有自带封面的页面，统一用构建期生成的 /og.png
+    // （即 src/pages/og.png.ts 渲染的「站名 + 简介」卡片）。
+    // resolveDefaultOgImagePath 的逻辑是：public/ 下存在同名文件就用它，否则回退到
+    // 生成的 /og.png。这里填 "og.png" 而 public/ 下并没有这个文件，因此会稳定命中
+    // 动态图——同时避免了主题自带的宣传图（原 default-og.jpg，已删除）被当成封面。
+    ogImage: "og.png",
     // 语言保持 en（v1 采用"中文内容 + 英文界面"，中文化为后续小改）
     lang: "en",
     timezone: "Asia/Shanghai",
