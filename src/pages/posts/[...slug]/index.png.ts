@@ -4,6 +4,7 @@ import { fontData, experimental_getFontFileURL } from "astro:assets";
 import satori from "satori";
 import sharp from "sharp";
 import { getFontPathByWeight } from "@/utils/getFontPathByWeight";
+import { loadOgCjkFont } from "@/utils/loadOgCjkFont";
 import { getPostSlug } from "@/utils/getPostPaths";
 import config from "@/config";
 
@@ -35,13 +36,15 @@ export const GET: APIRoute = async ({ props, url }) => {
     throw new Error("Cannot find the font path.");
   }
 
-  const [regularData, boldData] = await Promise.all([
+  const [regularData, boldData, cjkData] = await Promise.all([
     fetch(experimental_getFontFileURL(regularFontPath, url)).then(res =>
       res.arrayBuffer()
     ),
     fetch(experimental_getFontFileURL(boldFontPath, url)).then(res =>
       res.arrayBuffer()
     ),
+    // 文章标题基本是中文，同样依赖这份字体；缺了它整行标题都会变成豆腐块
+    loadOgCjkFont(),
   ]);
 
   const svg = await satori(
@@ -55,6 +58,9 @@ export const GET: APIRoute = async ({ props, url }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          // 逗号分隔即 satori 的字族回退链：拉丁走 Cascadia Code，汉字落到
+          // Noto Sans SC（原模板没写 fontFamily，satori 只用首个注册字体，导致中文豆腐块）
+          fontFamily: "Cascadia Code, Noto Sans SC",
         },
         children: [
           {
@@ -182,6 +188,14 @@ export const GET: APIRoute = async ({ props, url }) => {
           name: "Cascadia Code",
           data: boldData,
           weight: 700,
+          style: "normal",
+        },
+        {
+          // 只提供 400 字重：标题虽然声明了 font-weight: bold，但 satori 取不到
+          // 700 的汉字时会回退到最近的可用字重（实测为 400），不会报错也不会留白。
+          name: "Noto Sans SC",
+          data: cjkData,
+          weight: 400,
           style: "normal",
         },
       ],
