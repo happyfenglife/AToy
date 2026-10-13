@@ -7,7 +7,21 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
-  --font-app: var(--font-primary);
+  --font-app: var(--font-stack);
+}
+
+/*
+ * 全站字体栈
+ * 拉丁字形：Cascadia Code（自托管 woff，见 astro.config.ts）
+ * 汉字字形：Cascadia Code 不含 CJK，需由后面的系统字体接管。
+ *   微软雅黑 / 苹方 / 思源黑体 均为系统自带字体（受版权保护，不能作为 Web 字体分发），
+ *   因此这里只做 font-family 回退声明，由访问者本机提供字形，零流量开销。
+ *   顺序：Windows → macOS → 旧版 macOS → Linux/Android → 兜底
+ */
+:root {
+  --font-stack:
+    var(--font-primary), "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB",
+    "Noto Sans SC", "Source Han Sans SC", "WenQuanYi Micro Hei", sans-serif;
 }
 
 /* Light theme values */
