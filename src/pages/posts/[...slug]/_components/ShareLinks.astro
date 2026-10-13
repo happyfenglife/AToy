@@ -43,8 +43,9 @@ const items = await Promise.all(
       type,
       title,
       Icon,
-      // link 拼接平台前缀；copy 原样作为落地页；qrcode 不跳转
-      href: type === "link" ? `${url ?? ""}${pageUrl}` : url,
+      // link：拼接平台前缀，页面 URL 要整体编码（微博/QQ空间的官方文档都要求
+      // URL 编码，否则含 & ? # 时参数会被截断）；copy 原样作为落地页；qrcode 不跳转
+      href: type === "link" ? `${url ?? ""}${encodeURIComponent(pageUrl)}` : url,
       qrSvg: type === "qrcode" ? buildQrSvg(pageUrl) : "",
     };
   })
