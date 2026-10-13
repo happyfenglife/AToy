@@ -62,8 +62,8 @@ export default defineConfig({
     {
       // 使用 fontsource 提供的本地字体，避免构建期联网（Google Fonts provider 需访问 fonts.google.com）
       // formats 指定为 woff：satori/opentype.js 无法解析 woff2，OG 图生成需要 woff/ttf
-      name: "JetBrains Mono",
-      cssVariable: "--font-google-sans-code",
+      name: "Cascadia Code",
+      cssVariable: "--font-primary",
       provider: fontProviders.fontsource(),
       fallbacks: ["monospace"],
       weights: [400, 700],
