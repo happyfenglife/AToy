@@ -82,8 +82,22 @@ interface ShareLink {
    * e.g. "facebook" → src/assets/icons/socials/facebook.svg
    */
   name: string;
-  /** Base share URL. The post URL will be appended as a query param. */
-  url: string;
+  /**
+   * Share behavior. Defaults to "link".
+   * - "link": open `url` + the current page URL in a new tab. For platforms that
+   *   expose a web share endpoint (QQ, X, Telegram, mail, ...).
+   * - "qrcode": reveal a QR code of the current page URL instead of navigating.
+   *   For platforms with no web share endpoint at all (e.g. WeChat).
+   * - "copy": copy the current page URL to the clipboard, then open `url` as the
+   *   landing page. For platforms where sharing is a manual paste (e.g. Bilibili).
+   */
+  type?: "link" | "qrcode" | "copy";
+  /**
+   * Base share URL. For "link" the current page URL is appended, so include any
+   * prefix the platform needs (e.g. ".../shareqq/index.html?url="). For "copy" it
+   * is used as-is. Unused by "qrcode".
+   */
+  url?: string;
   /**
    * Accessible label for the icon link (aria-label, title attribute).
    * Auto-generated if omitted: "Share this post on Facebook", "Share this post via WhatsApp", etc.

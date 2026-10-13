@@ -38,8 +38,22 @@ export default defineAstroPaperConfig({
     { name: "mail", url: "mailto:hello@happyfenglife.club" },
   ],
   shareLinks: [
-    { name: "x", url: "https://x.com/intent/post?url=" },
-    { name: "telegram", url: "https://t.me/share/url?url=" },
-    { name: "mail", url: "mailto:?subject=See%20this%20post&body=" },
+    // QQ：官方「分享给好友」网页组件，可用。组件会把当前文章 URL 拼到 url 后面。
+    {
+      name: "qq",
+      url: "https://connect.qq.com/widget/shareqq/index.html?url=",
+      linkTitle: "分享到 QQ",
+    },
+    // 微信：没有对外的网页分享接口（JS-SDK 只能用在微信内置浏览器里），
+    // 因此改为展开当前文章的二维码，扫码打开后再从微信内部转发。
+    { name: "wechat", type: "qrcode", linkTitle: "微信扫码分享" },
+    // B 站：同样没有「分享站外链接」的网页接口（站内分享接口需要登录态 + CSRF）。
+    // 点击后复制文章链接，并打开 B 站动态发布页，粘贴即可。
+    {
+      name: "bilibili",
+      type: "copy",
+      url: "https://t.bilibili.com/",
+      linkTitle: "复制链接并打开 B 站动态",
+    },
   ],
 });
